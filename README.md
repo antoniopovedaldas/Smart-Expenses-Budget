@@ -2,7 +2,7 @@
 Track your expenses from the terminal 
 
 ## Features
-- Add expenses by typing: `Spent 45 on food
+- Add expenses by typing: Spent 45 on food
 - Logs all data to a CSV file
 - Generates summaries of total spend per category
 - Optional pie chart visualization
