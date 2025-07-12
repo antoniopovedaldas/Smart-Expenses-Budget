@@ -1,0 +1,43 @@
+import csv
+import os
+from datetime import datetime
+
+CSV_FILE = 'expenses.csv' # Change your PATH
+
+def parse_entry(text):
+    words = text.lower().split()
+    amount = None
+    category = "uncategorized"
+
+    for i, word in enumerate(words):
+        if word.replace('.', '', 1).isdigit():
+            amount = float(word)
+            if i + 1 < len(words):
+                category = words[i + 1]
+            break
+    return amount, category
+
+def log_expense(amount, category):
+    with open(CSV_FILE, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([datetime.now().strftime('%Y-%m-%d'), amount, category])
+
+def main():
+    print("💸 Enter your expense (e.g., 'Spent 20 on spanish flag') or type 'exit':")
+    while True:
+        entry = input("> ")
+        if entry.lower() in ['exit', 'quit']:
+            break
+        amount, category = parse_entry(entry)
+        if amount:
+            log_expense(amount, category)
+            print(f"✅ Logged: ${amount} on {category}")
+        else:
+            print("❌ Couldn't understand. Try 'Spent 12 on lunch'.")
+
+if __name__ == "__main__":
+    if not os.path.exists(CSV_FILE):
+        with open(CSV_FILE, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['date', 'amount', 'category'])
+    main()
